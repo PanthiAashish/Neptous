@@ -1,17 +1,17 @@
 
 <%- include("partials/header"); -%>
 <header class="bg-light text-center py-4">
-  <h1 class="text-dark">HIMU RANDI MUGis</h1>
+  <h1 class="text-dark">How to study in US for free</h1>
 </header>
   
 
 
   <%  posts.forEach(function(post){ %>
-    <div class="card mx-3 my-3">
+    <div class="card mx-4 my-3">
       <div class="card-body">
         <h1><%=post.title%></h1>
         <p>
-        <%=post.content.substring(0, 100) + " ..."%>
+        <%=post.content.substring(0, 500) + " ..."%>
         <a href="/posts/<%=post.title%>">Read More</a>
         </p>
       </div>
