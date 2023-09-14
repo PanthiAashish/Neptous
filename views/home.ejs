@@ -6,13 +6,13 @@
   
 
 
-  <%  posts.forEach(function(post){ %>
+  <%  posts.forEach(function(posts){ %>
     <div class="card mx-4 my-3">
       <div class="card-body">
-        <h1><%=post.title%></h1>
+        <h1><%=posts.articleTitle%></h1>
         <p>
-        <%=post.content.substring(0, 500) + " ..."%>
-        <a href="/posts/<%=post.title%>">Read More</a>
+        <%=posts.articleContent.substring(0, 500) + " ..."%>
+        <a href="/articles/<%=posts.articleTitle%>">Read More</a>
         </p>
       </div>
 
