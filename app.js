@@ -7,10 +7,11 @@ const _ = require("lodash");
 const mongoose = require("mongoose")
 require('dotenv').config();
 const mongodbPassword = process.env.MONGODB_PASSWORD
+const jwt = require('jsonwebtoken')
 
 const app = express();
 
-const SECRET = 'My-secret_key' // DONT FORGET TO PUT IT IN ENVIRONMET VARIABLES
+const SECRET = process.env.SECRET // DONT FORGET TO PUT IT IN ENVIRONMET VARIABLES
 
 //creating the shape of data
 const articleSchema = new mongoose.Schema({
@@ -31,7 +32,8 @@ mongoose.connect(`mongodb+srv://aashish:${mongodbPassword}@cluster0.8bwunfa.mong
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
+
 app.use(express.static("public"));
 
 
@@ -53,10 +55,25 @@ app.get("/", async function (req, res) {
 });
 
 
+function verifyToken(req, res, next){
+  const token = req.query.token
+  if (!token) {
+    // return res.status(401).json({ message: 'Access denied. No token provided.' });
+    res.redirect('/login')
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    req.user = decoded.user;
+    next(); // User is authenticated, continue to the next middleware
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid token.' });
+  }
+}
 
 
 
-app.get("/compose", function(req, res){
+app.get("/compose", verifyToken, function(req, res){
   res.render("compose");
 });
 
@@ -71,6 +88,22 @@ app.post("/compose", function(req, res){
   res.redirect("/");
 
 });
+
+app.post('/login', function(req, res){
+  const password = req.body.password;
+
+  if (password === 'yourPassword') {
+    // Create a JWT token with user information
+    // const token = jwt.sign( password, SECRET, { expiresIn: '1h' });
+
+    const token = jwt.sign( {password}, SECRET);
+
+    res.redirect(`/compose?token=${token}`)
+
+  } else {
+    res.status(401).json({ message: 'Incorrect password' });
+  }
+})
 
 
 app.get("/chat", function(req,res){
@@ -100,7 +133,13 @@ app.post('/articles/:articleTitle', function(req, res){
 })
 
 
+app.get('/login', (req, res)=>{
+  res.render('login')
+})
+
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
+
+
