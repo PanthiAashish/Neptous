@@ -8,12 +8,20 @@ const mongoose = require("mongoose")
 require('dotenv').config();
 const mongodbPassword = process.env.MONGODB_PASSWORD
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
 const app = express();
 
 const SECRET = process.env.SECRET // DONT FORGET TO PUT IT IN ENVIRONMET VARIABLES
+app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(express.static("public"));
+
+app.use(cookieParser());
 //creating the shape of data
+
 const articleSchema = new mongoose.Schema({
   articleTitle: String,
   articleContent: String
@@ -30,11 +38,6 @@ mongoose.connect(`mongodb+srv://aashish:${mongodbPassword}@cluster0.8bwunfa.mong
   useUnifiedTopology: true
 });
 
-app.set('view engine', 'ejs');
-
-app.use(bodyParser.urlencoded({extended: false}));
-
-app.use(express.static("public"));
 
 
 
@@ -56,28 +59,32 @@ app.get("/", async function (req, res) {
 
 
 function verifyToken(req, res, next){
-  const token = req.query.token
-  if (!token) {
-    // return res.status(401).json({ message: 'Access denied. No token provided.' });
-    res.redirect('/login')
-  }
-
-  try {
-    const decoded = jwt.verify(token, SECRET);
-    req.user = decoded.user;
-    next(); // User is authenticated, continue to the next middleware
-  } catch (error) {
-    res.status(400).json({ message: 'Invalid token.' });
-  }
+ const jwt_token = req.cookies.jwt_token
+ if (!jwt_token) {
+  // return res.status(401).json({ message: 'Access denied. No token provided.' });
+  res.redirect('/login')
 }
 
+try {
+  const decoded = jwt.verify(jwt_token, SECRET);
+  if(decoded.admin == true){
+    next(); // User is authenticated, continue to the next middleware
+  }
+  else{
+    res.redirect('/login')
+  }
+} catch (error) {
+  res.status(400).json({ message: 'Invalid token.' });
+}
+
+}
 
 
 app.get("/compose", verifyToken, function(req, res){
   res.render("compose");
 });
 
-app.post("/compose", function(req, res){
+app.post("/compose", verifyToken, function(req, res){
   const articles = new Articles({
     articleTitle: req.body.postTitle,
     articleContent: req.body.postBody
@@ -96,10 +103,9 @@ app.post('/login', function(req, res){
     // Create a JWT token with user information
     // const token = jwt.sign( password, SECRET, { expiresIn: '1h' });
 
-    const token = jwt.sign( {password}, SECRET);
-
-    res.redirect(`/compose?token=${token}`)
-
+    const token = jwt.sign({admin: true}, SECRET);
+    res.cookie("jwt_token", token, {maxAge: 600000});
+    res.redirect('/compose')
   } else {
     res.status(401).json({ message: 'Incorrect password' });
   }
@@ -107,7 +113,7 @@ app.post('/login', function(req, res){
 
 
 app.get("/chat", function(req,res){
-  res.redirect('https://discord.gg/ZTB2ZAFp')
+  res.redirect('https://discord.gg/JanKxhma3q')
 })
 
 

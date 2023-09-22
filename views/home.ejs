@@ -3,18 +3,20 @@
 <header class="bg-light text-center py-4">
   <h1 class="text-dark">How to study in the US for free</h1>
 </header>
+<div>
 
 <% posts.forEach(function(post) { %>
   <div class="card mx-4 my-3">
     <div class="card-body">
       <h1><%= post.articleTitle %></h1>
-      <p>
-        <p><%- post.articleContent.substring(0, 500) + " ..." %></p>
+     
+        <p><%- post.articleContent.substring(0, 500) + " ..." %><a href="/articles/<%- post.articleTitle %>">Read More</a></p>
         
-        <a href="/articles/<%- post.articleTitle %>">Read More</a>
-      </p>
+        
+    
     </div>
   </div>
 <% }) %>
-
+  
+</div>
 <%- include("partials/footer"); -%>
