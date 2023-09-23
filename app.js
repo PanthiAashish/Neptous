@@ -27,11 +27,17 @@ const articleSchema = new mongoose.Schema({
   articleContent: String
 })
 
+const userData = new mongoose.Schema({
+  userTopic: String,
+  userContent: String,
+  userID: String
+})
 
 //creating the collection.(one database can have multiple collections like userschema, adminschema, courseschema)
 //Technically, we call them defining mongoose models
 // const (collection name) = mongoose.model('Collection name', schema(shape of data))
 const Articles = mongoose.model('Articles', articleSchema)
+const UserContent = mongoose.model('UserContent', userData)
 
 mongoose.connect(`mongodb+srv://aashish:${mongodbPassword}@cluster0.8bwunfa.mongodb.net/Neptous`, {
   useNewUrlParser: true,
@@ -99,7 +105,7 @@ app.post("/compose", verifyToken, function(req, res){
 app.post('/login', function(req, res){
   const password = req.body.password;
 
-  if (password === 'yourPassword') {
+  if (password === process.env.LOGIN_PASSWORD) {
     // Create a JWT token with user information
     // const token = jwt.sign( password, SECRET, { expiresIn: '1h' });
 
@@ -134,9 +140,15 @@ app.get('/articles/:articleTitle', async function(req, res) {
 });
 
 app.post('/articles/:articleTitle', function(req, res){
-  console.log(req.body.topic)
-  res.redirect('/')
+  const userContent = new UserContent({
+    userTopic: req.body.topic,
+    userContent: req.body.details,
+    userID: req.body.identity
+  });
+
+  userContent.save()
 })
+
 
 
 app.get('/login', (req, res)=>{
