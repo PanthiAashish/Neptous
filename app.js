@@ -156,7 +156,7 @@ app.get('/login', (req, res)=>{
 })
 
 
-app.listen(3000, function() {
+app.listen(process.env.PORT || 5000, function() {
   console.log("Server started on port 3000");
 });
 
