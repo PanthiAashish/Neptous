@@ -129,7 +129,7 @@ app.get('/articles/:articleTitle', async function(req, res) {
     const posts = await Articles.findOne({ articleTitle: requestedTitle });
 
     if (posts) {
-      return res.render('post', { posts: posts });
+       res.render('post', { posts: posts });
     } else {
       return res.status(404).send('Article not found'); // Handle not found case
     }
