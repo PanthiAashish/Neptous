@@ -147,6 +147,8 @@ app.post('/articles/:articleTitle', function(req, res){
   });
 
   userContent.save()
+
+  res.redirect('/')
 })
 
 
