@@ -125,7 +125,7 @@ app.get("/chat", function(req,res){
 
 app.get('/articles/:articleTitle', async function(req, res) {
   try {
-    const requestedTitle = _.lowerCase(req.params.articleTitle);
+    const requestedTitle = req.params.articleTitle;
     const posts = await Articles.findOne({ articleTitle: requestedTitle });
 
     if (posts) {
@@ -158,8 +158,6 @@ app.get('/login', (req, res)=>{
 })
 
 
-app.listen(process.env.PORT || 5000, function() {
+app.listen(3000, function() {
   console.log("Server started on port 3000");
-});
-
-
+})
