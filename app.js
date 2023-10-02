@@ -125,7 +125,7 @@ app.get("/chat", function(req,res){
 
 app.get('/articles/:articleTitle', async function(req, res) {
   try {
-    const requestedTitle = _.lowerCase(req.params.articleTitle);
+    const requestedTitle = req.params.articleTitle;
     const posts = await Articles.findOne({ articleTitle: requestedTitle });
 
     if (posts) {
