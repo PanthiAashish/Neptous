@@ -1,3 +1,18 @@
+body{
+  background-color: rgb(30, 31, 33);
+  color: hsl(0, 0%, 100%)
+}
+
+.main{
+  background-color: rgb(30, 31, 33);
+  color: hsl(0, 0%, 100%);
+}
+
+a {
+  text-decoration: underline; /* Adds underline below the link */
+  color: inherit; /* Inherits color from the parent element (normal text color) */
+}
+
 /* html {
   min-height: 100%;
   position: relative;
@@ -35,6 +50,7 @@
 	height: 60px;
 	background-color: #1abc9c;
 } */
+
 /* 
 .footer p {
 	margin-top: 25px;

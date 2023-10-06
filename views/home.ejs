@@ -1,22 +1,23 @@
 
 <%- include("partials/header"); -%>
-<header class="bg-light text-center py-4">
-  <h1 class="text-dark">How to study in the US for free</h1>
+<header style="background-color: rgb(30, 31, 33);color: rgb(201, 42, 70);" class="text-left py-4">
+  <h1 style="font-family: Arial, sans-serif;font-size: 30px;font-weight: bold;" class="px-5">Neptous</h1>
 </header>
-<div>
 
-<% posts.forEach(function(post) { %>
-  <div class="card mx-4 my-3">
-    <div class="card-body">
-      <h1><%= post.articleTitle %></h1>
-     
-        <p><%- post.articleContent.substring(0, 500) + " ..." %></p><a href="/articles/<%- post.articleTitle %>">Read More</a>
-        
-        
-    
+
+<div style="background-color: rgb(30, 31, 33); color: #fff;">
+
+  <% posts.forEach(function(post) { %>
+    <div style="background-color: rgb(30, 31, 33); color: #fff; padding: 0px 250px;" class="card">
+      <div style="background-color: rgb(30, 31, 33); color: #fff; font-family: Arial" class="card-body px-6">
+        <h1 style="color: rgb(255, 255, 255); margin-top: 60px;"><a style="color: white; text-decoration: none;" href="/articles/<%- post.articleTitle %>"><%= post.articleTitle %></a>
+          </h1>
+          <p style="color: rgb(175, 175, 175);text-align: justify;"><%- post.articleContent.substring(0, 500) + " ..." %></p><a style="color: rgb(175, 175, 175);" href="/articles/<%- post.articleTitle %>">More ></a>
+          <br style="background-color: white; color: white;">
+          
+      
+      </div>
     </div>
+  <% }) %>
   </div>
-<% }) %>
-  
-</div>
 <%- include("partials/footer"); -%>
