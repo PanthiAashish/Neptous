@@ -1,7 +1,6 @@
-const express = require('express');
+import express from 'express';
 const mongoose = require('mongoose');
 const cors = require('cors');
-const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
 
 const app = express();
@@ -14,3 +13,8 @@ mongoose.connect(`mongodb+srv://aashish:${mongodbPassword}@cluster0.8bwunfa.mong
   useUnifiedTopology: true
 });
 
+app.use('/', userRouter)
+
+app.listen(process.env.PORT || 5000, function() {
+  console.log("Server started on port 3000");
+});
