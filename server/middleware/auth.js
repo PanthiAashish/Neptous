@@ -25,6 +25,6 @@ function verifyToken(req, res, next){
 
 
 module.exports = {
-    authenticateJwt,
+    verifyToken,
     SECRET
 }

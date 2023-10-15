@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
+
 
 const articleSchema = new mongoose.Schema({
     articleTitle: String,
@@ -14,7 +15,7 @@ const userData = new mongoose.Schema({
 const Articles = mongoose.model('Articles', articleSchema)
 const UserContent = mongoose.model('UserContent', userData)
 
-module.exports = {
+export {
     Articles,
     UserContent
 }

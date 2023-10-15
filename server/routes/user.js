@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Articles = require('server/db/index.js')
+import { Articles } from '../db/index.js';
+const verifyToken = require("../middleware/auth");
 
 
 router.get("/", async function (req, res) {
@@ -45,7 +46,6 @@ router.post("/login", async (req, res) =>{
   }
 })
 
-module.exports = router;
 
 
 
@@ -81,4 +81,4 @@ router.get('/articles/:articleTitle', async function(req, res) {
   }
 });
 
-module.exports = router;
+export default router;
