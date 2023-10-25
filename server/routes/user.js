@@ -1,13 +1,18 @@
-import express from 'express';
+import express, { json } from 'express';
 const router = express.Router();
 import { Articles } from '../db/index.js';
-const verifyToken = require("../middleware/auth");
+import { verifyToken, SECRET } from "../middleware/auth.js";
+
+// console.log(Articles)
 
 
 router.get("/", async function (req, res) {
   try {
     // Retrieve articles from the database using async/await
     const articles = await Articles.find({});
+
+    // Log the articles to the console for debugging
+    console.log(articles);
 
     // Send articles object as a JSON response
     res.json(articles);
@@ -17,6 +22,7 @@ router.get("/", async function (req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.post('/compose', verifyToken, async(req, res) => {
   const articles = new Articles({
